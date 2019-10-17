@@ -64,5 +64,4 @@ object VimFileType : LanguageFileType(VimLanguage) {
     override fun getDescription(): String {
         return "Vim Language"
     }
-
 }
