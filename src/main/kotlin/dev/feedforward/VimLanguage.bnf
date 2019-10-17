@@ -1,0 +1,24 @@
+{
+  parserClass="dev.feedforward.parser.VimParser"
+
+  extends="com.intellij.extapi.psi.ASTWrapperPsiElement"
+
+  psiClassPrefix="Vim"
+  psiImplClassSuffix="Impl"
+  psiPackage="dev.feedforward.psi"
+  psiImplPackage="dev.feedforward.psi.impl"
+
+  elementTypeHolderClass="dev.feedforward.psi.VimTypes"
+  elementTypeClass="dev.feedforward.psi.VimElementType"
+  tokenTypeClass="dev.feedforward.psi.VimTokenType"
+}
+
+vimFile ::= item_*
+
+private item_ ::= (echo_command|COMMENT|CRLF)
+
+echo_command ::= ECHO *expression
+
+expression ::= string
+
+string ::= OPEN_QUOTE STRING_CONTENT CLOSE_QUOTE

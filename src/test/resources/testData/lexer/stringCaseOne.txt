@@ -1,0 +1,5 @@
+VimTokenType.ECHO ('echo')
+WHITE_SPACE (' ')
+VimTokenType.OPEN_QUOTE ('"')
+VimTokenType.STRING_CONTENT ('abc')
+VimTokenType.CLOSE_QUOTE ('"')
