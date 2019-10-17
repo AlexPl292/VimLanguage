@@ -17,7 +17,7 @@ vimFile ::= item_*
 
 private item_ ::= (echo_command|COMMENT|CRLF)
 
-echo_command ::= ECHO *expression
+echo_command ::= ECHO expression*
 
 expression ::= string
 
