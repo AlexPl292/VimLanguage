@@ -55,7 +55,7 @@
       ECHO = "echo"
       OPEN_QUOTE = '"'
       CLOSE_QUOTE = '"'
-      STRING_LITERAL = 'regexp:("([^\"\\]|\\.)*")'
+      STRING_LITERAL = 'regexp:("([^"\\]|\\.)*")'
 
       space='regexp:\s+'
   ]
