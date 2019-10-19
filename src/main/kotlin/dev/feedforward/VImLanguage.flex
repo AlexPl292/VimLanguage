@@ -72,6 +72,7 @@ STRING_LITERAL=\"(\\.|[^\\\"])*\"
       "*"                                                     { return VimTypes.STAR; }
       "/"                                                     { return VimTypes.SLASH; }
       "%"                                                     { return VimTypes.PERCENT; }
+      "!"                                                     { return VimTypes.NOT; }
 }
 
 ({CRLF}|{WHITE_SPACE})+                                     { return TokenType.WHITE_SPACE; }

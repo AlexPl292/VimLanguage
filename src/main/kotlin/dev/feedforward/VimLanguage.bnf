@@ -51,6 +51,7 @@
       STAR               = '*'
       SLASH              = '/'
       PERCENT            = '%'
+      NOT                = '!'
 
       ECHO = "echo"
       OPEN_QUOTE = '"'
@@ -75,6 +76,7 @@ expr ::= logical_or_expr
        | comparison_expr
        | add_expr
        | mul_expr
+       | unary_expr
        | literal_expr
 
 
@@ -84,4 +86,5 @@ logical_and_expr ::= expr '&&' expr
 comparison_expr ::= expr ('==' | '==?' | '==#' | '!=' | '!=?' | '!=#' | '>' | '>?' | '>#' | '>=' | '>=?' | '>=#' | '<' | '<?' | '<#' | '<=' | '<=?' | '<=#' | '=~' | '=~?' | '=~#' | '!~' | '!~?' | '!~#' | 'is' | 'is?' | 'is#' | 'isnot' | 'isnot?' | 'isnot#') expr
 add_expr ::= expr ('+' | '-' | '.') expr
 mul_expr ::= expr ('*' | '/' | '%') expr
+unary_expr ::= ('!' | '+' | '-') expr
 literal_expr ::= STRING_LITERAL
