@@ -13,8 +13,8 @@ import com.intellij.psi.TokenType
 import com.intellij.psi.tree.IFileElementType
 import com.intellij.psi.tree.TokenSet
 import dev.feedforward.parser.VimParser
+import dev.feedforward.psi.VimFile
 import dev.feedforward.psi.VimTypes
-import dev.feedforward.psi.VimTypes.COMMENT
 import javax.swing.Icon
 
 class VimParserDefinition : ParserDefinition {
