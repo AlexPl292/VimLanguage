@@ -45,6 +45,12 @@
       ISNOT              = 'isnot'
       ISNOTCI            = 'isnot?'
       ISNOTCS            = 'isnot#'
+      PLUS               = '+'
+      MINUS              = '-'
+      DOT                = '.'
+      STAR               = '*'
+      SLASH              = '/'
+      PERCENT            = '%'
 
       ECHO = "echo"
       OPEN_QUOTE = '"'
@@ -67,6 +73,8 @@ echo_command ::= ECHO expr*
 expr ::= logical_or_expr
        | logical_and_expr
        | comparison_expr
+       | add_expr
+       | mul_expr
        | literal_expr
 
 
@@ -74,4 +82,6 @@ expr ::= logical_or_expr
 logical_or_expr ::= expr '||' expr
 logical_and_expr ::= expr '&&' expr
 comparison_expr ::= expr ('==' | '==?' | '==#' | '!=' | '!=?' | '!=#' | '>' | '>?' | '>#' | '>=' | '>=?' | '>=#' | '<' | '<?' | '<#' | '<=' | '<=?' | '<=#' | '=~' | '=~?' | '=~#' | '!~' | '!~?' | '!~#' | 'is' | 'is?' | 'is#' | 'isnot' | 'isnot?' | 'isnot#') expr
+add_expr ::= expr ('+' | '-' | '.') expr
+mul_expr ::= expr ('*' | '/' | '%') expr
 literal_expr ::= STRING_LITERAL
