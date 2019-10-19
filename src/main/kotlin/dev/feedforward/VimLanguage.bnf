@@ -15,6 +15,36 @@
   tokens = [
       ANDAND             = '&&'
       OROR               = '||'
+      EQEQ               = '=='
+      EQEQCI             = '==?'
+      EQEQCS             = '==#'
+      NEQ                = '!='
+      NEQCI              = '!=?'
+      NEQCS              = '!=#'
+      GT                 = '>'
+      GTCI               = '>?'
+      GTCS               = '>#'
+      GTEQ               = '>='
+      GTEQCI             = '>=?'
+      GTEQCS             = '>=#'
+      LT                 = '<'
+      LTCI               = '<?'
+      LTCS               = '<#'
+      LTEQ               = '<='
+      LTEQCI             = '<=?'
+      LTEQCS             = '<=#'
+      MATCH              = '=~'
+      MATCHCI            = '=~?'
+      MATCHCS            = '=~#'
+      NOMATCH            = '!~'
+      NOMATCHCI          = '!~?'
+      NOMATCHCS          = '!~#'
+      IS                 = 'is'
+      ISCI               = 'is?'
+      ISCS               = 'is#'
+      ISNOT              = 'isnot'
+      ISNOTCI            = 'isnot?'
+      ISNOTCS            = 'isnot#'
 
       ECHO = "echo"
       OPEN_QUOTE = '"'
@@ -36,9 +66,12 @@ echo_command ::= ECHO expr*
 
 expr ::= logical_or_expr
        | logical_and_expr
+       | comparison_expr
        | literal_expr
+
 
 
 logical_or_expr ::= expr '||' expr
 logical_and_expr ::= expr '&&' expr
+comparison_expr ::= expr ('==' | '==?' | '==#' | '!=' | '!=?' | '!=#' | '>' | '>?' | '>#' | '>=' | '>=?' | '>=#' | '<' | '<?' | '<#' | '<=' | '<=?' | '<=#' | '=~' | '=~?' | '=~#' | '!~' | '!~?' | '!~#' | 'is' | 'is?' | 'is#' | 'isnot' | 'isnot?' | 'isnot#') expr
 literal_expr ::= STRING_LITERAL
