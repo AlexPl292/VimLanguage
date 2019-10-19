@@ -22,10 +22,9 @@ END_OF_LINE_COMMENT=("#")[^\r\n]*
 CRLF=\R
 WHITE_SPACE=[\ \n\t\f]
 
-QUOTE                    = \"
+STRING_LITERAL=\"(\\.|[^\\\"])*\"
 
 %state WAITING_VALUE
-%state STRING_EXPRESSION
 
 %%
 
@@ -33,12 +32,10 @@ QUOTE                    = \"
 
 <YYINITIAL> {
       "echo"                                                  { return VimTypes.ECHO; }
-      {QUOTE}                                                 { yybegin(STRING_EXPRESSION); return VimTypes.OPEN_QUOTE; }
-}
+      {STRING_LITERAL}                                        { return VimTypes.STRING_LITERAL; }
 
-<STRING_EXPRESSION> {
-      {QUOTE}                                                 { yybegin(YYINITIAL); return VimTypes.CLOSE_QUOTE; }
-      [^\"]+                                                  { return VimTypes.STRING_CONTENT; }
+      "||"                                                    { return VimTypes.OROR; }
+      "&&"                                                    { return VimTypes.ANDAND; }
 }
 
 ({CRLF}|{WHITE_SPACE})+                                     { return TokenType.WHITE_SPACE; }

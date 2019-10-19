@@ -11,14 +11,34 @@
   elementTypeHolderClass="dev.feedforward.psi.VimTypes"
   elementTypeClass="dev.feedforward.psi.VimElementType"
   tokenTypeClass="dev.feedforward.psi.VimTokenType"
+
+  tokens = [
+      ANDAND             = '&&'
+      OROR               = '||'
+
+      ECHO = "echo"
+      OPEN_QUOTE = '"'
+      CLOSE_QUOTE = '"'
+      STRING_LITERAL = 'regexp:("([^\"\\]|\\.)*")'
+
+      space='regexp:\s+'
+  ]
+
+  extends(".*expr")=expr
 }
 
 vimFile ::= item_*
 
 private item_ ::= (echo_command|COMMENT|CRLF)
 
-echo_command ::= ECHO expression*
+echo_command ::= ECHO expr*
 
-expression ::= string
 
-string ::= OPEN_QUOTE STRING_CONTENT CLOSE_QUOTE
+expr ::= logical_or_expr
+       | logical_and_expr
+       | literal_expr
+
+
+logical_or_expr ::= expr '||' expr
+logical_and_expr ::= expr '&&' expr
+literal_expr ::= STRING_LITERAL
