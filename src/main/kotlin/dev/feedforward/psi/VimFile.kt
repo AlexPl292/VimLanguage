@@ -7,11 +7,7 @@ import dev.feedforward.VimFileType
 import dev.feedforward.VimLanguage
 
 class VimFile(viewProvider: FileViewProvider) : PsiFileBase(viewProvider, VimLanguage) {
-    override fun getFileType(): FileType {
-        return VimFileType
-    }
+    override fun getFileType(): FileType =VimFileType
 
-    override fun toString(): String {
-        return "Vim File"
-    }
+    override fun toString(): String ="Vim File"
 }
