@@ -30,8 +30,6 @@ INT_NUMBER = [:digit:]+
 FLOAT_NUMBER = [:digit:]+\.[:digit:]+
 SCIENTIFIC_NUMBER = [:digit:]+\.[:digit:]+[eE]([+-]?[:digit:]+)
 
-%state WAITING_VALUE
-
 %%
 
 <YYINITIAL> {END_OF_LINE_COMMENT}                           { yybegin(YYINITIAL); return VimTypes.COMMENT; }
