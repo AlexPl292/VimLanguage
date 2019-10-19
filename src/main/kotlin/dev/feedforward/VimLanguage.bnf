@@ -52,6 +52,13 @@
       SLASH              = '/'
       PERCENT            = '%'
       NOT                = '!'
+      ASS                = '='
+
+      SQOPEN             = '['
+      SQCLOSE            = ']'
+      COLON              = ':'
+      POPEN              = '('
+      PCLOSE             = ')'
 
       ECHO = "echo"
       OPEN_QUOTE = '"'
@@ -62,6 +69,8 @@
       INT_NUMBER = 'regexp:\d+'
       FLOAT_NUMBER = 'regexp:\d+\.\d+'
       SCIENTIFIC_NUMBER = 'regexp:\d+\.\d+([eE])(([+-])?\d+)'
+
+      IDENTIFIER = 'regexp:[0-9A-Za-z_]'
 
       space='regexp:\s+'
   ]
@@ -82,9 +91,11 @@ expr ::= logical_or_expr
        | add_expr
        | mul_expr
        | unary_expr
+       | squares_group_expr
        | final_expr
 
-private final_expr ::= literal_expr
+private squares_group_expr ::= squares_expr | call_expr
+private final_expr ::= literal_expr | parentheses_expr
 
 logical_or_expr ::= expr '||' expr
 logical_and_expr ::= expr '&&' expr
@@ -93,5 +104,13 @@ add_expr ::= expr ('+' | '-' | '.') expr
 mul_expr ::= expr ('*' | '/' | '%') expr
 unary_expr ::= ('!' | '+' | '-') expr
 literal_expr ::= number | STRING_LITERAL
+parentheses_expr ::= '(' expr ')'
+
+squares_expr ::= expr (bracket_slice|subscript)
+bracket_slice ::= SQOPEN expr? ':' expr? SQCLOSE
+subscript ::= SQOPEN expr SQCLOSE
+call_expr ::= expr arg_list
+// Vim allows foo(a, b, ).
+arg_list ::= '(' (')' | expr (',' expr)* ','? ')')
 
 number ::= HEX_NUMBER | INT_NUMBER | FLOAT_NUMBER | SCIENTIFIC_NUMBER

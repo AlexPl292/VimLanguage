@@ -30,6 +30,8 @@ INT_NUMBER = [:digit:]+
 FLOAT_NUMBER = [:digit:]+\.[:digit:]+
 SCIENTIFIC_NUMBER = [:digit:]+\.[:digit:]+[eE]([+-]?[:digit:]+)
 
+IDENTIFIER = [[:jletterdigit:]_]+
+
 %%
 
 <YYINITIAL> {END_OF_LINE_COMMENT}                           { yybegin(YYINITIAL); return VimTypes.COMMENT; }
@@ -79,10 +81,18 @@ SCIENTIFIC_NUMBER = [:digit:]+\.[:digit:]+[eE]([+-]?[:digit:]+)
       "%"                                                     { return VimTypes.PERCENT; }
       "!"                                                     { return VimTypes.NOT; }
 
+      ":"                                                     { return VimTypes.COLON; }
+      "["                                                     { return VimTypes.SQOPEN; }
+      "]"                                                     { return VimTypes.SQCLOSE; }
+      "("                                                     { return VimTypes.POPEN; }
+      ")"                                                     { return VimTypes.PCLOSE; }
+
       {HEX_NUMBER}                                            { return VimTypes.HEX_NUMBER; }
       {INT_NUMBER}                                            { return VimTypes.INT_NUMBER; }
       {FLOAT_NUMBER}                                          { return VimTypes.FLOAT_NUMBER; }
       {SCIENTIFIC_NUMBER}                                     { return VimTypes.SCIENTIFIC_NUMBER; }
+
+      {IDENTIFIER}                                            { return VimTypes.IDENTIFIER; }
 }
 
 ({CRLF}|{WHITE_SPACE})+                                     { return TokenType.WHITE_SPACE; }
