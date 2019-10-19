@@ -23,6 +23,12 @@ CRLF=\R
 WHITE_SPACE=[\ \n\t\f]
 
 STRING_LITERAL=\"(\\.|[^\\\"])*\"
+SINGLE_QUOTED_STRING_LITERAL=\'(\\.|[^\\\'])*\'
+
+HEX_NUMBER = "0" [xX] [0-9a-fA-F]+
+INT_NUMBER = [:digit:]+
+FLOAT_NUMBER = [:digit:]+\.[:digit:]+
+SCIENTIFIC_NUMBER = [:digit:]+\.[:digit:]+[eE]([+-]?[:digit:]+)
 
 %state WAITING_VALUE
 
@@ -33,6 +39,7 @@ STRING_LITERAL=\"(\\.|[^\\\"])*\"
 <YYINITIAL> {
       "echo"                                                  { return VimTypes.ECHO; }
       {STRING_LITERAL}                                        { return VimTypes.STRING_LITERAL; }
+      {SINGLE_QUOTED_STRING_LITERAL}                          { return VimTypes.STRING_LITERAL; }
 
       "||"                                                    { return VimTypes.OROR; }
       "&&"                                                    { return VimTypes.ANDAND; }
@@ -73,6 +80,11 @@ STRING_LITERAL=\"(\\.|[^\\\"])*\"
       "/"                                                     { return VimTypes.SLASH; }
       "%"                                                     { return VimTypes.PERCENT; }
       "!"                                                     { return VimTypes.NOT; }
+
+      {HEX_NUMBER}                                            { return VimTypes.HEX_NUMBER; }
+      {INT_NUMBER}                                            { return VimTypes.INT_NUMBER; }
+      {FLOAT_NUMBER}                                          { return VimTypes.FLOAT_NUMBER; }
+      {SCIENTIFIC_NUMBER}                                     { return VimTypes.SCIENTIFIC_NUMBER; }
 }
 
 ({CRLF}|{WHITE_SPACE})+                                     { return TokenType.WHITE_SPACE; }

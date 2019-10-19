@@ -58,6 +58,11 @@
       CLOSE_QUOTE = '"'
       STRING_LITERAL = 'regexp:("([^"\\]|\\.)*")'
 
+      HEX_NUMBER = 'regexp:0[xX][0-9a-fA-F]+'
+      INT_NUMBER = 'regexp:\d+'
+      FLOAT_NUMBER = 'regexp:\d+\.\d+'
+      SCIENTIFIC_NUMBER = 'regexp:\d+\.\d+([eE])(([+-])?\d+)'
+
       space='regexp:\s+'
   ]
 
@@ -77,9 +82,9 @@ expr ::= logical_or_expr
        | add_expr
        | mul_expr
        | unary_expr
-       | literal_expr
+       | final_expr
 
-
+private final_expr ::= literal_expr
 
 logical_or_expr ::= expr '||' expr
 logical_and_expr ::= expr '&&' expr
@@ -87,4 +92,6 @@ comparison_expr ::= expr ('==' | '==?' | '==#' | '!=' | '!=?' | '!=#' | '>' | '>
 add_expr ::= expr ('+' | '-' | '.') expr
 mul_expr ::= expr ('*' | '/' | '%') expr
 unary_expr ::= ('!' | '+' | '-') expr
-literal_expr ::= STRING_LITERAL
+literal_expr ::= number | STRING_LITERAL
+
+number ::= HEX_NUMBER | INT_NUMBER | FLOAT_NUMBER | SCIENTIFIC_NUMBER
