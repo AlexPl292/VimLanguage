@@ -114,6 +114,6 @@ bracket_slice ::= SQOPEN expr? ':' expr? SQCLOSE
 subscript ::= SQOPEN expr SQCLOSE
 call_expr ::= expr arg_list
 // Vim allows foo(a, b, ).
-arg_list ::= '(' (')' | expr (',' expr)* ','? ')')
+arg_list ::= '(' expr (',' (expr | &')'))* ')' {pin(".*")=1}
 
 number ::= HEX_NUMBER | INT_NUMBER | FLOAT_NUMBER | SCIENTIFIC_NUMBER
