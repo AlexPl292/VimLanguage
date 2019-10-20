@@ -86,6 +86,7 @@ IDENTIFIER = [[:jletterdigit:]_]+
       "]"                                                     { return VimTypes.SQCLOSE; }
       "("                                                     { return VimTypes.POPEN; }
       ")"                                                     { return VimTypes.PCLOSE; }
+      "?"                                                     { return VimTypes.QUESTION; }
 
       {HEX_NUMBER}                                            { return VimTypes.HEX_NUMBER; }
       {INT_NUMBER}                                            { return VimTypes.INT_NUMBER; }

@@ -59,6 +59,7 @@
       COLON              = ':'
       POPEN              = '('
       PCLOSE             = ')'
+      QUESTION           = '?'
 
       ECHO = "echo"
       OPEN_QUOTE = '"'
@@ -85,7 +86,8 @@ private item_ ::= (echo_command|COMMENT|CRLF)
 echo_command ::= ECHO expr*
 
 
-expr ::= logical_or_expr
+expr ::= ternary_expr
+       | logical_or_expr
        | logical_and_expr
        | comparison_expr
        | add_expr
@@ -97,6 +99,7 @@ expr ::= logical_or_expr
 private squares_group_expr ::= squares_expr | call_expr
 private final_expr ::= literal_expr | parentheses_expr
 
+ternary_expr ::= expr '?' expr ':' expr
 logical_or_expr ::= expr '||' expr
 logical_and_expr ::= expr '&&' expr
 comparison_expr ::= expr ('==' | '==?' | '==#' | '!=' | '!=?' | '!=#' | '>' | '>?' | '>#' | '>=' | '>=?' | '>=#' | '<' | '<?' | '<#' | '<=' | '<=?' | '<=#' | '=~' | '=~?' | '=~#' | '!~' | '!~?' | '!~#' | 'is' | 'is?' | 'is#' | 'isnot' | 'isnot?' | 'isnot#') expr
