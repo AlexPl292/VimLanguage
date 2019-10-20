@@ -19,7 +19,6 @@ repositories {
 
 dependencies {
     compile("org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.3.50")
-    compile("org.jetbrains.kotlinx:kotlinx-serialization-runtime:0.12.0")
 }
 
 tasks.withType<KotlinCompile> {
