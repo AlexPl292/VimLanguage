@@ -37,7 +37,7 @@ IDENTIFIER = [[:jletterdigit:]_]+
 <YYINITIAL> {END_OF_LINE_COMMENT}                           { yybegin(YYINITIAL); return VimTypes.COMMENT; }
 
 <YYINITIAL> {
-      "echo"                                                  { return VimTypes.ECHO; }
+      "ec"|"ech"|"echo"                                       { return VimTypes.ECHO; }
       {STRING_LITERAL}                                        { return VimTypes.STRING_LITERAL; }
       {SINGLE_QUOTED_STRING_LITERAL}                          { return VimTypes.STRING_LITERAL; }
 

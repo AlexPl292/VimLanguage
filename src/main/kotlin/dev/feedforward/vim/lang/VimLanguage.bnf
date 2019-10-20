@@ -61,7 +61,7 @@
       PCLOSE             = ')'
       QUESTION           = '?'
 
-      ECHO = "echo"
+      ECHO = "regexp:ec|ech|echo"
       OPEN_QUOTE = '"'
       CLOSE_QUOTE = '"'
       STRING_LITERAL = 'regexp:("([^"\\]|\\.)*")'
