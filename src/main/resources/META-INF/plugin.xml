@@ -1,14 +1,14 @@
 <idea-plugin>
   <id>com.your.company.unique.plugin.id</id>
-  <name>dev.feedforward.VimLanguage</name>
+  <name>dev.feedforward.vim.lang.VimLanguage</name>
   <version>1.0</version>
   <vendor>Me</vendor>
 
   <idea-version since-build="173.0"/>
 
   <extensions defaultExtensionNs="com.intellij">
-    <fileType name="Vim file" implementationClass="dev.feedforward.VimFileType" fieldName="INSTANCE" language="VimL" extensions="vim"/>
-    <lang.parserDefinition language="VimL" implementationClass="dev.feedforward.VimParserDefinition"/>
+    <fileType name="Vim file" implementationClass="dev.feedforward.vim.lang.VimFileType" fieldName="INSTANCE" language="VimL" extensions="vim"/>
+    <lang.parserDefinition language="VimL" implementationClass="dev.feedforward.vim.lang.VimParserDefinition"/>
   </extensions>
 
   <actions>

@@ -1,4 +1,4 @@
-package dev.feedforward
+package dev.feedforward.vim.lang
 
 import com.intellij.lexer.FlexAdapter
 import java.io.Reader

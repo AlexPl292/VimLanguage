@@ -1,4 +1,4 @@
-package dev.feedforward
+package dev.feedforward.vim.lang
 
 import com.intellij.lang.ASTNode
 import com.intellij.lang.ParserDefinition
@@ -13,8 +13,8 @@ import com.intellij.psi.TokenType
 import com.intellij.psi.tree.IFileElementType
 import com.intellij.psi.tree.TokenSet
 import dev.feedforward.parser.VimParser
-import dev.feedforward.psi.VimFile
-import dev.feedforward.psi.VimTypes
+import dev.feedforward.vim.lang.psi.VimFile
+import dev.feedforward.vim.lang.psi.VimTypes
 import javax.swing.Icon
 
 class VimParserDefinition : ParserDefinition {

@@ -1,16 +1,16 @@
 {
-  parserClass="dev.feedforward.parser.VimParser"
+  parserClass="dev.feedforward.vim.lang.parser.VimParser"
 
   extends="com.intellij.extapi.psi.ASTWrapperPsiElement"
 
   psiClassPrefix="Vim"
   psiImplClassSuffix="Impl"
-  psiPackage="dev.feedforward.psi"
-  psiImplPackage="dev.feedforward.psi.impl"
+  psiPackage="dev.feedforward.vim.lang.psi"
+  psiImplPackage="dev.feedforward.vim.lang.psi.impl"
 
-  elementTypeHolderClass="dev.feedforward.psi.VimTypes"
-  elementTypeClass="dev.feedforward.psi.VimElementType"
-  tokenTypeClass="dev.feedforward.psi.VimTokenType"
+  elementTypeHolderClass="dev.feedforward.vim.lang.psi.VimTypes"
+  elementTypeClass="dev.feedforward.vim.lang.psi.VimElementType"
+  tokenTypeClass="dev.feedforward.vim.lang.psi.VimTokenType"
 
   tokens = [
       ANDAND             = '&&'

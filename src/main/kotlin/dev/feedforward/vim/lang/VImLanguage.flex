@@ -1,8 +1,8 @@
-package dev.feedforward;
+package dev.feedforward.vim.lang;
 
 import com.intellij.lexer.FlexLexer;
 import com.intellij.psi.tree.IElementType;
-import dev.feedforward.psi.VimTypes;
+import dev.feedforward.vim.lang.psi.VimTypes;
 import com.intellij.psi.TokenType;
 
 %%
