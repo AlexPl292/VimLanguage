@@ -44,3 +44,17 @@ idea {
         generatedSourceDirs.add(file("src/main/gen"))
     }
 }
+
+val sourcesJar by tasks.registering(Jar::class) {
+    classifier = "sources"
+    from(sourceSets.main.get().allSource)
+}
+
+publishing {
+    publications {
+        register("mavenPublication", MavenPublication::class) {
+            from(components["java"])
+            artifact(sourcesJar.get())
+        }
+    }
+}
