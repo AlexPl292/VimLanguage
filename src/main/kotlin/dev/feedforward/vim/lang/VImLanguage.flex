@@ -38,6 +38,8 @@ IDENTIFIER = [[:jletterdigit:]_]+
 
 <YYINITIAL> {
       "ec"|"ech"|"echo"                                       { return VimTypes.ECHO; }
+      "as"|"asc"|"asci"|"ascii"                               { return VimTypes.ASCII; }
+
       {STRING_LITERAL}                                        { return VimTypes.STRING_LITERAL; }
       {SINGLE_QUOTED_STRING_LITERAL}                          { return VimTypes.STRING_LITERAL; }
 
@@ -56,7 +58,7 @@ IDENTIFIER = [[:jletterdigit:]_]+
       ">=?"                                                   { return VimTypes.GTEQCI; }
       ">=#"                                                   { return VimTypes.GTEQCS; }
       "<"                                                     { return VimTypes.LT; }
-      "<?"        ￿                                            { return VimTypes.LTCI; }
+      "<?"                                                    { return VimTypes.LTCI; }
       "<#"                                                    { return VimTypes.LTCS; }
       "<="                                                    { return VimTypes.LTEQ; }
       "<=?"                                                   { return VimTypes.LTEQCI; }
