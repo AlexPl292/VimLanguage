@@ -12,7 +12,7 @@ import com.intellij.psi.PsiFile
 import com.intellij.psi.TokenType
 import com.intellij.psi.tree.IFileElementType
 import com.intellij.psi.tree.TokenSet
-import dev.feedforward.parser.VimParser
+import dev.feedforward.vim.lang.parser.VimParser
 import dev.feedforward.vim.lang.psi.VimFile
 import dev.feedforward.vim.lang.psi.VimTypes
 import javax.swing.Icon
