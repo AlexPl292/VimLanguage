@@ -3,6 +3,7 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 plugins {
     java
     idea
+    `maven-publish`
     kotlin("jvm") version "1.3.50"
     kotlin("plugin.serialization") version "1.3.50"
     id("org.jetbrains.intellij") version "0.4.10"
