@@ -39,6 +39,7 @@ IDENTIFIER = [[:jletterdigit:]_]+
 <YYINITIAL> {
       "ec"|"ech"|"echo"                                       { return VimTypes.ECHO; }
       "as"|"asc"|"asci"|"ascii"                               { return VimTypes.ASCII; }
+      "comc"|"comcl"|"comcle"|"comclea"|"comclear"            { return VimTypes.COMCLEAR; }
 
       {STRING_LITERAL}                                        { return VimTypes.STRING_LITERAL; }
       {SINGLE_QUOTED_STRING_LITERAL}                          { return VimTypes.STRING_LITERAL; }

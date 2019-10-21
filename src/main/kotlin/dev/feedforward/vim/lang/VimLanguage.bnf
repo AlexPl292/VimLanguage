@@ -63,6 +63,7 @@
 
       ECHO = "regexp:echo|ech|ec"
       ASCII = "regexp:ascii|asci|asc|as"
+      COMCLEAR = "regexp:comclear|comclea|comcle|comcl|comc"
 
       OPEN_QUOTE = '"'
       CLOSE_QUOTE = '"'
@@ -87,9 +88,11 @@ private item_ ::= (command|COMMENT|CRLF)
 
 command ::= echo_command
           | ascii_command
+          | comclear_command
 
 echo_command ::= ECHO expr*
-private ascii_command ::= ASCII
+ascii_command ::= ASCII
+comclear_command ::= COMCLEAR
 
 
 expr ::= ternary_expr
