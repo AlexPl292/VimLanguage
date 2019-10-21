@@ -40,6 +40,7 @@ IDENTIFIER = [[:jletterdigit:]_]+
       "ec"|"ech"|"echo"                                       { return VimTypes.ECHO; }
       "as"|"asc"|"asci"|"ascii"                               { return VimTypes.ASCII; }
       "comc"|"comcl"|"comcle"|"comclea"|"comclear"            { return VimTypes.COMCLEAR; }
+      "on"|"onl"|"only"                                       { return VimTypes.ONLY; }
 
       {STRING_LITERAL}                                        { return VimTypes.STRING_LITERAL; }
       {SINGLE_QUOTED_STRING_LITERAL}                          { return VimTypes.STRING_LITERAL; }
