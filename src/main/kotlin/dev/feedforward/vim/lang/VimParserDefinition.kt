@@ -54,7 +54,7 @@ object VimFileType : LanguageFileType(VimLanguage) {
     }
 
     override fun getName(): String {
-        return "VimL"
+        return "Vim file"
     }
 
     override fun getDefaultExtension(): String {
