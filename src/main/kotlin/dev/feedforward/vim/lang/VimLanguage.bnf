@@ -65,6 +65,7 @@
       ASCII = "regexp:ascii|asci|asc|as"
       COMCLEAR = "regexp:comclear|comclea|comcle|comcl|comc"
       ONLY = "regexp:only|onl|on"
+      QUIT = "regexp:quit|qui|qu|q"
 
       OPEN_QUOTE = '"'
       CLOSE_QUOTE = '"'
@@ -91,12 +92,15 @@ command ::= echo_command
           | ascii_command
           | comclear_command
           | only_command
+          | quit_command
 
 echo_command ::= ECHO expr*
 ascii_command ::= ASCII
 comclear_command ::= COMCLEAR
-only_command ::= ONLY ['!']
+only_command ::= <<bang ONLY>>
+quit_command ::= <<bang QUIT>>
 
+private meta bang ::= <<p>> [BANG]
 
 expr ::= ternary_expr
        | logical_or_expr

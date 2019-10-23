@@ -29,7 +29,7 @@ class VimParserDefinition : ParserDefinition {
     override fun createLexer(project: Project?): Lexer = VimLexerAdapter()
 
     override fun createElement(node: ASTNode): PsiElement {
-        return VimTypes.Factory.createElement(node);
+        return VimTypes.Factory.createElement(node)
     }
 
     override fun getCommentTokens(): TokenSet {

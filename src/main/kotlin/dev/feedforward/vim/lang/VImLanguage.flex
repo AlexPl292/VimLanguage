@@ -32,6 +32,8 @@ SCIENTIFIC_NUMBER = [:digit:]+\.[:digit:]+[eE]([+-]?[:digit:]+)
 
 IDENTIFIER = [[:jletterdigit:]_]+
 
+%state WITH_BANG
+
 %%
 
 <YYINITIAL> {END_OF_LINE_COMMENT}                           { yybegin(YYINITIAL); return VimTypes.COMMENT; }
@@ -40,7 +42,8 @@ IDENTIFIER = [[:jletterdigit:]_]+
       "ec"|"ech"|"echo"                                       { return VimTypes.ECHO; }
       "as"|"asc"|"asci"|"ascii"                               { return VimTypes.ASCII; }
       "comc"|"comcl"|"comcle"|"comclea"|"comclear"            { return VimTypes.COMCLEAR; }
-      "on"|"onl"|"only"                                       { return VimTypes.ONLY; }
+      "on"|"onl"|"only"                                       { yybegin(WITH_BANG); return VimTypes.ONLY; }
+      "q"|"qu"|"qui"|"quit"                                   { yybegin(WITH_BANG); return VimTypes.QUIT; }
 
       {STRING_LITERAL}                                        { return VimTypes.STRING_LITERAL; }
       {SINGLE_QUOTED_STRING_LITERAL}                          { return VimTypes.STRING_LITERAL; }
@@ -98,6 +101,11 @@ IDENTIFIER = [[:jletterdigit:]_]+
       {SCIENTIFIC_NUMBER}                                     { return VimTypes.SCIENTIFIC_NUMBER; }
 
       {IDENTIFIER}                                            { return VimTypes.IDENTIFIER; }
+}
+
+<WITH_BANG> {
+    "!"                                                         { return VimTypes.BANG; }
+    ({CRLF}|{WHITE_SPACE})+                                     { yybegin(YYINITIAL); return TokenType.WHITE_SPACE; }
 }
 
 ({CRLF}|{WHITE_SPACE})+                                     { return TokenType.WHITE_SPACE; }
