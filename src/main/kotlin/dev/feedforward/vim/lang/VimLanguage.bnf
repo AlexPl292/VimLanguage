@@ -51,7 +51,7 @@
       STAR               = '*'
       SLASH              = '/'
       PERCENT            = '%'
-      NOT                = '!'
+      BANG               = '!'
       ASS                = '='
 
       SQOPEN             = '['

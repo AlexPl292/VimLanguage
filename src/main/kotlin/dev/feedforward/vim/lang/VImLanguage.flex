@@ -83,7 +83,7 @@ IDENTIFIER = [[:jletterdigit:]_]+
       "*"                                                     { return VimTypes.STAR; }
       "/"                                                     { return VimTypes.SLASH; }
       "%"                                                     { return VimTypes.PERCENT; }
-      "!"                                                     { return VimTypes.NOT; }
+      "!"                                                     { return VimTypes.BANG; }
 
       ":"                                                     { return VimTypes.COLON; }
       "["                                                     { return VimTypes.SQOPEN; }
