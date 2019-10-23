@@ -39,11 +39,11 @@ IDENTIFIER = [[:jletterdigit:]_]+
 <YYINITIAL> {END_OF_LINE_COMMENT}                           { yybegin(YYINITIAL); return VimTypes.COMMENT; }
 
 <YYINITIAL> {
-      "ec"|"ech"|"echo"                                       { return VimTypes.ECHO; }
-      "as"|"asc"|"asci"|"ascii"                               { return VimTypes.ASCII; }
-      "comc"|"comcl"|"comcle"|"comclea"|"comclear"            { return VimTypes.COMCLEAR; }
-      "on"|"onl"|"only"                                       { yybegin(WITH_BANG); return VimTypes.ONLY; }
-      "q"|"qu"|"qui"|"quit"                                   { yybegin(WITH_BANG); return VimTypes.QUIT; }
+      "ec"|"ech"|"echo"                                       { return VimTypes.C_ECHO; }
+      "as"|"asc"|"asci"|"ascii"                               { return VimTypes.C_ASCII; }
+      "comc"|"comcl"|"comcle"|"comclea"|"comclear"            { return VimTypes.C_COMCLEAR; }
+      "on"|"onl"|"only"                                       { yybegin(WITH_BANG); return VimTypes.C_ONLY; }
+      "q"|"qu"|"qui"|"quit"                                   { yybegin(WITH_BANG); return VimTypes.C_QUIT; }
 
       {STRING_LITERAL}                                        { return VimTypes.STRING_LITERAL; }
       {SINGLE_QUOTED_STRING_LITERAL}                          { return VimTypes.STRING_LITERAL; }

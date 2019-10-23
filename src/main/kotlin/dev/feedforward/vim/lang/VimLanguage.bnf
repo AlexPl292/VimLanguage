@@ -61,11 +61,11 @@
       PCLOSE             = ')'
       QUESTION           = '?'
 
-      ECHO = "regexp:echo|ech|ec"
-      ASCII = "regexp:ascii|asci|asc|as"
-      COMCLEAR = "regexp:comclear|comclea|comcle|comcl|comc"
-      ONLY = "regexp:only|onl|on"
-      QUIT = "regexp:quit|qui|qu|q"
+      C_ECHO = "regexp:echo|ech|ec"
+      C_ASCII = "regexp:ascii|asci|asc|as"
+      C_COMCLEAR = "regexp:comclear|comclea|comcle|comcl|comc"
+      C_ONLY = "regexp:only|onl|on"
+      C_QUIT = "regexp:quit|qui|qu|q"
 
       OPEN_QUOTE = '"'
       CLOSE_QUOTE = '"'
@@ -94,11 +94,11 @@ command ::= echo_command
           | only_command
           | quit_command
 
-echo_command ::= ECHO expr*
-ascii_command ::= ASCII
-comclear_command ::= COMCLEAR
-only_command ::= <<bang ONLY>>
-quit_command ::= <<bang QUIT>>
+echo_command ::= C_ECHO expr*
+ascii_command ::= C_ASCII
+comclear_command ::= C_COMCLEAR
+only_command ::= <<bang C_ONLY>>
+quit_command ::= <<bang C_QUIT>>
 
 private meta bang ::= <<p>> [BANG]
 
