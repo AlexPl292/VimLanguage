@@ -52,7 +52,10 @@
       SLASH              = '/'
       PERCENT            = '%'
       BANG               = '!'
-      ASS                = '='
+      DOLLAR             = '$'
+      SINGLE_QUOTE       = "'"
+      COMMA              = ","
+      SEMICOLON          = ";"
 
       SQOPEN             = '['
       SQCLOSE            = ']'
@@ -61,11 +64,18 @@
       PCLOSE             = ')'
       QUESTION           = '?'
 
+      ESCAPED_AMPERSAND  = 'regexp:\\&'
+      ESCAPED_QUESTION  = 'regexp:\\\?'
+      ESCAPED_SLASH  = 'regexp:\\/'
+
       C_ECHO = "regexp:echo|ech|ec"
       C_ASCII = "regexp:ascii|asci|asc|as"
       C_COMCLEAR = "regexp:comclear|comclea|comcle|comcl|comc"
       C_ONLY = "regexp:only|onl|on"
       C_QUIT = "regexp:quit|qui|qu|q"
+      C_COPY = "regexp:copy|cop|co"
+
+      QUOTE_WITH_ANYTHING = "regexp:'."
 
       OPEN_QUOTE = '"'
       CLOSE_QUOTE = '"'
@@ -75,8 +85,6 @@
       INT_NUMBER = 'regexp:\d+'
       FLOAT_NUMBER = 'regexp:\d+\.\d+'
       SCIENTIFIC_NUMBER = 'regexp:\d+\.\d+([eE])(([+-])?\d+)'
-
-      IDENTIFIER = 'regexp:[0-9A-Za-z_]'
 
       space='regexp:\s+'
   ]
@@ -93,14 +101,25 @@ command ::= echo_command
           | comclear_command
           | only_command
           | quit_command
+          | copy_command
 
 echo_command ::= C_ECHO expr*
 ascii_command ::= C_ASCII
 comclear_command ::= C_COMCLEAR
 only_command ::= <<bang C_ONLY>>
 quit_command ::= <<bang C_QUIT>>
+copy_command ::= [command_range] C_COPY
 
 private meta bang ::= <<p>> [BANG]
+
+command_range ::= starred_range (range_separator starred_range)*
+
+private starred_range ::= range_address_with_offset [percent_star]
+range_address_with_offset ::= range_address plus_minus_number*
+range_address ::= ('.'|'$'|QUOTE_WITH_ANYTHING|ESCAPED_AMPERSAND|ESCAPED_QUESTION|ESCAPED_SLASH|INT_NUMBER)
+private plus_minus_number ::= ['+'|'-'] INT_NUMBER
+private percent_star ::= '%'|'*'
+private range_separator ::= ','|';'
 
 expr ::= ternary_expr
        | logical_or_expr

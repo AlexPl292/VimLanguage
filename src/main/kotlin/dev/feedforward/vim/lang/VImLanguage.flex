@@ -30,7 +30,7 @@ INT_NUMBER = [:digit:]+
 FLOAT_NUMBER = [:digit:]+\.[:digit:]+
 SCIENTIFIC_NUMBER = [:digit:]+\.[:digit:]+[eE]([+-]?[:digit:]+)
 
-IDENTIFIER = [[:jletterdigit:]_]+
+QUOTE_WITH_ANYTHING = \'.
 
 %state WITH_BANG
 
@@ -44,6 +44,7 @@ IDENTIFIER = [[:jletterdigit:]_]+
       "comc"|"comcl"|"comcle"|"comclea"|"comclear"            { return VimTypes.C_COMCLEAR; }
       "on"|"onl"|"only"                                       { yybegin(WITH_BANG); return VimTypes.C_ONLY; }
       "q"|"qu"|"qui"|"quit"                                   { yybegin(WITH_BANG); return VimTypes.C_QUIT; }
+      "co"|"cop"|"copy"                                       { return VimTypes.C_COPY; }
 
       {STRING_LITERAL}                                        { return VimTypes.STRING_LITERAL; }
       {SINGLE_QUOTED_STRING_LITERAL}                          { return VimTypes.STRING_LITERAL; }
@@ -87,6 +88,10 @@ IDENTIFIER = [[:jletterdigit:]_]+
       "/"                                                     { return VimTypes.SLASH; }
       "%"                                                     { return VimTypes.PERCENT; }
       "!"                                                     { return VimTypes.BANG; }
+      "$"                                                     { return VimTypes.DOLLAR; }
+      "'"                                                     { return VimTypes.SINGLE_QUOTE; }
+      ","                                                     { return VimTypes.COMMA; }
+      ";"                                                     { return VimTypes.SEMICOLON; }
 
       ":"                                                     { return VimTypes.COLON; }
       "["                                                     { return VimTypes.SQOPEN; }
@@ -95,12 +100,16 @@ IDENTIFIER = [[:jletterdigit:]_]+
       ")"                                                     { return VimTypes.PCLOSE; }
       "?"                                                     { return VimTypes.QUESTION; }
 
+      \\&                                                     { return VimTypes.ESCAPED_AMPERSAND; }
+      \\\?                                                    { return VimTypes.ESCAPED_QUESTION; }
+      \\\/                                                    { return VimTypes.ESCAPED_SLASH; }
+
       {HEX_NUMBER}                                            { return VimTypes.HEX_NUMBER; }
       {INT_NUMBER}                                            { return VimTypes.INT_NUMBER; }
       {FLOAT_NUMBER}                                          { return VimTypes.FLOAT_NUMBER; }
       {SCIENTIFIC_NUMBER}                                     { return VimTypes.SCIENTIFIC_NUMBER; }
 
-      {IDENTIFIER}                                            { return VimTypes.IDENTIFIER; }
+      {QUOTE_WITH_ANYTHING}                                   { return VimTypes.QUOTE_WITH_ANYTHING; }
 }
 
 <WITH_BANG> {
