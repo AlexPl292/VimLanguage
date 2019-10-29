@@ -7,6 +7,7 @@
   psiImplClassSuffix="Impl"
   psiPackage="dev.feedforward.vim.lang.psi"
   psiImplPackage="dev.feedforward.vim.lang.psi.impl"
+  psiImplUtilClass="dev.feedforward.vim.lang.VimPsiImplUtils"
 
   elementTypeHolderClass="dev.feedforward.vim.lang.psi.VimTypes"
   elementTypeClass="dev.feedforward.vim.lang.psi.VimElementType"
@@ -90,6 +91,7 @@
   ]
 
   extends(".*expr")=expr
+  extends(".*command")=command
 }
 
 vimFile ::= item_*
@@ -102,6 +104,7 @@ command ::= echo_command
           | only_command
           | quit_command
           | copy_command
+          {methods=[getCommandName]}
 
 echo_command ::= C_ECHO expr*
 ascii_command ::= C_ASCII
