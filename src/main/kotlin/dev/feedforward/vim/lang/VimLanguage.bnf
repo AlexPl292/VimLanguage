@@ -75,6 +75,7 @@
       C_ONLY = "regexp:only|onl|on"
       C_QUIT = "regexp:quit|qui|qu|q"
       C_COPY = "regexp:copy|cop|co"
+      C_COMMAND = "regexp:command|comman|comma|comm|com"
 
       QUOTE_WITH_ANYTHING = "regexp:'."
 
@@ -101,6 +102,7 @@ private item_ ::= (command|COMMENT|CRLF)
 command ::= echo_command
           | ascii_command
           | comclear_command
+          | command_command
           | only_command
           | quit_command
           | copy_command
@@ -109,6 +111,7 @@ command ::= echo_command
 echo_command ::= C_ECHO expr*
 ascii_command ::= C_ASCII
 comclear_command ::= C_COMCLEAR
+command_command ::= <<bang C_COMMAND>> [COMMAND_ARGUMENT]
 only_command ::= <<bang C_ONLY>>
 quit_command ::= <<bang C_QUIT>>
 copy_command ::= [command_range] C_COPY

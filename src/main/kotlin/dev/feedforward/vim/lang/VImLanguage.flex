@@ -33,6 +33,7 @@ SCIENTIFIC_NUMBER = [:digit:]+\.[:digit:]+[eE]([+-]?[:digit:]+)
 QUOTE_WITH_ANYTHING = \'.
 
 %state WITH_BANG
+%state C_COMMAND_BANG C_COMMAND
 
 %%
 
@@ -45,6 +46,7 @@ QUOTE_WITH_ANYTHING = \'.
       "on"|"onl"|"only"                                       { yybegin(WITH_BANG); return VimTypes.C_ONLY; }
       "q"|"qu"|"qui"|"quit"                                   { yybegin(WITH_BANG); return VimTypes.C_QUIT; }
       "co"|"cop"|"copy"                                       { return VimTypes.C_COPY; }
+      "com"|"comm"|"comma"|"comman"|"command"                 { yybegin(C_COMMAND_BANG); return VimTypes.C_COMMAND; }
 
       {STRING_LITERAL}                                        { return VimTypes.STRING_LITERAL; }
       {SINGLE_QUOTED_STRING_LITERAL}                          { return VimTypes.STRING_LITERAL; }
@@ -114,6 +116,15 @@ QUOTE_WITH_ANYTHING = \'.
 
 <WITH_BANG> {
     "!"                                                         { return VimTypes.BANG; }
+    ({CRLF}|{WHITE_SPACE})+                                     { yybegin(YYINITIAL); return TokenType.WHITE_SPACE; }
+}
+
+<C_COMMAND_BANG> {
+    "!"                                                         { yybegin(C_COMMAND); return VimTypes.BANG; }
+    [^!]                                                        { yybegin(C_COMMAND); }
+}
+<C_COMMAND> {
+    [^\R]+                                                      { return VimTypes.COMMAND_ARGUMENT; }
     ({CRLF}|{WHITE_SPACE})+                                     { yybegin(YYINITIAL); return TokenType.WHITE_SPACE; }
 }
 
