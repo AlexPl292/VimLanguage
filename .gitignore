@@ -156,3 +156,4 @@ gradle-app.setting
 
 src/main/gen
 /src/main/kotlin/dev/feedforward/vimlparser/
+/.idea/StickySelectionHighlights.xml
