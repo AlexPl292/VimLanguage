@@ -32,6 +32,8 @@ SCIENTIFIC_NUMBER = [:digit:]+\.[:digit:]+[eE]([+-]?[:digit:]+)
 
 QUOTE_WITH_ANYTHING = \'.
 
+WORD = [:letter:]+
+
 %state WITH_BANG
 %state C_COMMAND_BANG C_COMMAND
 
@@ -47,6 +49,7 @@ QUOTE_WITH_ANYTHING = \'.
       "q"|"qu"|"qui"|"quit"                                   { yybegin(WITH_BANG); return VimTypes.C_QUIT; }
       "co"|"cop"|"copy"                                       { return VimTypes.C_COPY; }
       "com"|"comm"|"comma"|"comman"|"command"                 { yybegin(C_COMMAND_BANG); return VimTypes.C_COMMAND; }
+      "delc"|"delco"|"delcom"|"delcomm"|"delcomma"|"delcomman"|"delcommand" { return VimTypes.C_DELCOMMAND; }
 
       {STRING_LITERAL}                                        { return VimTypes.STRING_LITERAL; }
       {SINGLE_QUOTED_STRING_LITERAL}                          { return VimTypes.STRING_LITERAL; }
@@ -110,6 +113,8 @@ QUOTE_WITH_ANYTHING = \'.
       {INT_NUMBER}                                            { return VimTypes.INT_NUMBER; }
       {FLOAT_NUMBER}                                          { return VimTypes.FLOAT_NUMBER; }
       {SCIENTIFIC_NUMBER}                                     { return VimTypes.SCIENTIFIC_NUMBER; }
+
+      {WORD}                                                  { return VimTypes.WORD; }
 
       {QUOTE_WITH_ANYTHING}                                   { return VimTypes.QUOTE_WITH_ANYTHING; }
 }
