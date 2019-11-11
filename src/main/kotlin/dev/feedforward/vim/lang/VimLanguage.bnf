@@ -77,6 +77,7 @@
       C_COPY = "regexp:copy|cop|co"
       C_COMMAND = "regexp:command|comman|comma|comm|com"
       C_DELCOMMAND = "regexp:delcommand|delcomman|delcomma|delcomm|delcom|delco|delc"
+      C_DELETE = "regexp:delete|delet|dele|del|de|d"
 
       QUOTE_WITH_ANYTHING = "regexp:'."
 
@@ -107,6 +108,7 @@ command ::= echo_command
           | comclear_command
           | command_command
           | delcommand_command
+          | delete_command
           | only_command
           | quit_command
           | copy_command
@@ -117,6 +119,7 @@ ascii_command ::= C_ASCII
 comclear_command ::= C_COMCLEAR
 command_command ::= <<bang C_COMMAND>> [COMMAND_ARGUMENT]
 delcommand_command ::= C_DELCOMMAND WORD
+delete_command ::= [command_range] C_DELETE [WRITABLE_REGISTER] [INT_NUMBER]
 only_command ::= <<bang C_ONLY>>
 quit_command ::= <<bang C_QUIT>>
 copy_command ::= [command_range] C_COPY

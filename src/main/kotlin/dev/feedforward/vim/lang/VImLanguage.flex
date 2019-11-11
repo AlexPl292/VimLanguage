@@ -30,12 +30,15 @@ INT_NUMBER = [:digit:]+
 FLOAT_NUMBER = [:digit:]+\.[:digit:]+
 SCIENTIFIC_NUMBER = [:digit:]+\.[:digit:]+[eE]([+-]?[:digit:]+)
 
+WRITABLE_REGISTERS = [0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ\-\*\+\_\/\"]
+
 QUOTE_WITH_ANYTHING = \'.
 
 WORD = [:letter:]+
 
 %state WITH_BANG
 %state C_COMMAND_BANG C_COMMAND
+%state C_DELETE_REGISTER C_DELETE_COUNT
 
 %%
 
@@ -50,6 +53,7 @@ WORD = [:letter:]+
       "co"|"cop"|"copy"                                       { return VimTypes.C_COPY; }
       "com"|"comm"|"comma"|"comman"|"command"                 { yybegin(C_COMMAND_BANG); return VimTypes.C_COMMAND; }
       "delc"|"delco"|"delcom"|"delcomm"|"delcomma"|"delcomman"|"delcommand" { return VimTypes.C_DELCOMMAND; }
+      "d"|"de"|"del"|"dele"|"delet"|"delete"                  { yybegin(C_DELETE_REGISTER); return VimTypes.C_DELETE; }
 
       {STRING_LITERAL}                                        { return VimTypes.STRING_LITERAL; }
       {SINGLE_QUOTED_STRING_LITERAL}                          { return VimTypes.STRING_LITERAL; }
@@ -131,6 +135,18 @@ WORD = [:letter:]+
 <C_COMMAND> {
     [^\R]+                                                      { return VimTypes.COMMAND_ARGUMENT; }
     ({CRLF}|{WHITE_SPACE})+                                     { yybegin(YYINITIAL); return TokenType.WHITE_SPACE; }
+}
+
+<C_DELETE_REGISTER> {
+      {WRITABLE_REGISTERS}                                    { yybegin(C_DELETE_COUNT); return VimTypes.WRITABLE_REGISTER; }
+      ({CRLF}|{WHITE_SPACE})+                                 { return TokenType.WHITE_SPACE; }
+      [^]                                                     { yypushback(1); yybegin(YYINITIAL); }
+}
+
+<C_DELETE_COUNT> {
+    {INT_NUMBER}                                              { yybegin(YYINITIAL); return VimTypes.INT_NUMBER; }
+    ({CRLF}|{WHITE_SPACE})+                                   { return TokenType.WHITE_SPACE; }
+    [^]                                                       { yypushback(1); yybegin(YYINITIAL); }
 }
 
 ({CRLF}|{WHITE_SPACE})+                                     { return TokenType.WHITE_SPACE; }
