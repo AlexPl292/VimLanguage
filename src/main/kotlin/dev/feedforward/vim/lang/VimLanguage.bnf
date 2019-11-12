@@ -69,14 +69,6 @@
       ESCAPED_SLASH  = 'regexp:\\/'
 
       C_ECHO = "regexp:echo|ech|ec"
-      C_ASCII = "regexp:ascii|asci|asc|as"
-      C_COMCLEAR = "regexp:comclear|comclea|comcle|comcl|comc"
-      C_ONLY = "regexp:only|onl|on"
-      C_QUIT = "regexp:quit|qui|qu|q"
-      C_COPY = "regexp:copy|cop|co"
-      C_COMMAND = "regexp:command|comman|comma|comm|com"
-      C_DELCOMMAND = "regexp:delcommand|delcomman|delcomma|delcomm|delcom|delco|delc"
-      C_DELETE = "regexp:delete|delet|dele|del|de|d"
 
       QUOTE_WITH_ANYTHING = "regexp:'."
 
@@ -103,18 +95,15 @@ vimFile ::= item_*
 private item_ ::= (command|COMMENT|CRLF)
 
 command ::= echo_command
-          | command_command
-          | delete_command
+          | if_command
           | common_command
 
 echo_command ::= C_ECHO expr*
-command_command ::= <<bang C_COMMAND>> [COMMAND_ARGUMENT]
-delete_command ::= [command_range] C_DELETE [WRITABLE_REGISTER] [INT_NUMBER]
 common_command ::= [command_range] COMMON_COMMAND_NAME [COMMON_COMMAND_ARGUMENT]
 
-private meta bang ::= <<p>> [BANG]
-
 command_range ::= starred_range (range_separator starred_range)*
+
+if_command ::= IF expr item_* ENDIF
 
 private starred_range ::= range_address_with_offset [percent_star]
 range_address_with_offset ::= range_address plus_minus_number*

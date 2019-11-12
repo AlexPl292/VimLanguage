@@ -1,7 +1,10 @@
 package dev.feedforward.vim.lang
 
 import dev.feedforward.vim.lang.CommonCommandFlags.BANG
+import dev.feedforward.vim.lang.CommonCommandFlags.COUNT
+import dev.feedforward.vim.lang.CommonCommandFlags.EXTRA
 import dev.feedforward.vim.lang.CommonCommandFlags.NEEDARG
+import dev.feedforward.vim.lang.CommonCommandFlags.REGSTR
 import dev.feedforward.vim.lang.CommonCommandFlags.WORD1
 import java.util.*
 
@@ -24,7 +27,10 @@ class VimLexerUtils {
         private fun waitForArg(flags: EnumSet<CommonCommandFlags>): Boolean {
             return BANG in flags ||
                     NEEDARG in flags ||
-                    WORD1 in flags
+                    WORD1 in flags ||
+                    EXTRA in flags ||
+                    REGSTR in flags ||
+                    COUNT in flags
         }
     }
 }
@@ -34,8 +40,10 @@ val commonCommands = arrayOf(
         VimCommonCommand("only", 2, EnumSet.of(BANG)),
         VimCommonCommand("quit", 1, EnumSet.of(BANG)),
         VimCommonCommand("comclear", 4),
+        VimCommonCommand("command", 3, EnumSet.of(BANG, EXTRA)),
         VimCommonCommand("delcommand", 4, EnumSet.of(NEEDARG, WORD1)),
-        VimCommonCommand("copy", 2)
+        VimCommonCommand("copy", 2),
+        VimCommonCommand("delete", 1, EnumSet.of(REGSTR, COUNT))
 )
 
 data class VimCommonCommand(
@@ -47,6 +55,9 @@ data class VimCommonCommand(
 enum class CommonCommandFlags {
     BANG,
     NEEDARG,
-    WORD1
+    WORD1,
+    EXTRA,
+    REGSTR,
+    COUNT
 }
 

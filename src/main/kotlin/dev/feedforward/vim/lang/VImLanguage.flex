@@ -17,24 +17,6 @@ import dev.feedforward.vim.lang.VimLexerUtils;
 %function advance
 %type IElementType
 %public
-%{
-    private final Queue<Integer> queue = new ArrayDeque<>();
-
-    private void trace(int... states) {
-      for (int state: states) {
-          queue.add(state);
-      }
-      yybegin(queue.poll());
-    }
-
-    private void continueQueue() {
-      if (queue.isEmpty()) {
-        yybegin(YYINITIAL);
-      } else {
-        yybegin(queue.poll());
-      }
-    }
-%}
 
 END_OF_LINE_COMMENT=("#")[^\r\n]*
 
@@ -49,13 +31,10 @@ INT_NUMBER = [:digit:]+
 FLOAT_NUMBER = [:digit:]+\.[:digit:]+
 SCIENTIFIC_NUMBER = [:digit:]+\.[:digit:]+[eE]([+-]?[:digit:]+)
 
-WRITABLE_REGISTERS = [0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ\-\*\+\_\/\"]
-
 QUOTE_WITH_ANYTHING = \'.
 
 WORD = [:letter:]+
 
-%state C_BANG C_ARGUMENT C_REGISTER C_COUNT
 %xstate COMMON_COMMAND_ARGUMENT
 
 %%
@@ -64,14 +43,9 @@ WORD = [:letter:]+
 
 <YYINITIAL> {
       "ec"|"ech"|"echo"                                       { return VimTypes.C_ECHO; }
-      "com"|"comm"|"comma"|"comman"|"command"                 {
-              trace(C_BANG, C_ARGUMENT);
-              return VimTypes.C_COMMAND;
-            }
-      "d"|"de"|"del"|"dele"|"delet"|"delete"                  {
-        trace(C_REGISTER, C_COUNT);
-        return VimTypes.C_DELETE;
-      }
+
+      "if"                                                    { return VimTypes.IF; }
+      "endif"                                                 { return VimTypes.ENDIF; }
 
       {STRING_LITERAL}                                        { return VimTypes.STRING_LITERAL; }
       {SINGLE_QUOTED_STRING_LITERAL}                          { return VimTypes.STRING_LITERAL; }
@@ -154,28 +128,6 @@ WORD = [:letter:]+
 <COMMON_COMMAND_ARGUMENT> {
     [^\r\n]+                                                  { yybegin(YYINITIAL); return VimTypes.COMMON_COMMAND_ARGUMENT; }
     [\r\n]                                                    { yypushback(1); yybegin(YYINITIAL); }
-}
-
-<C_BANG> {
-    "!"                                                         { continueQueue(); return VimTypes.BANG; }
-    [^!]                                                        { yypushback(1); continueQueue(); }
-}
-
-<C_ARGUMENT> {
-    [^\R]+                                                      { return VimTypes.COMMAND_ARGUMENT; }
-    ({CRLF}|{WHITE_SPACE})+                                     { continueQueue(); return TokenType.WHITE_SPACE; }
-}
-
-<C_REGISTER> {
-      {WRITABLE_REGISTERS}                                    { continueQueue(); return VimTypes.WRITABLE_REGISTER; }
-      ({CRLF}|{WHITE_SPACE})+                                 { return TokenType.WHITE_SPACE; }
-      [^]                                                     { yypushback(1); continueQueue(); }
-}
-
-<C_COUNT> {
-    {INT_NUMBER}                                              { continueQueue(); return VimTypes.INT_NUMBER; }
-    ({CRLF}|{WHITE_SPACE})+                                   { return TokenType.WHITE_SPACE; }
-    [^]                                                       { yypushback(1); continueQueue(); }
 }
 
 ({CRLF}|{WHITE_SPACE})+                                     { return TokenType.WHITE_SPACE; }
