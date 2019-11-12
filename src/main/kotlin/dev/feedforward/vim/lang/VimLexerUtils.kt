@@ -1,6 +1,12 @@
 package dev.feedforward.vim.lang
 
-import dev.feedforward.vim.lang.CommonCommandFlags.*
+import dev.feedforward.vim.lang.CommonCommandFlags.BANG
+import dev.feedforward.vim.lang.CommonCommandFlags.COUNT
+import dev.feedforward.vim.lang.CommonCommandFlags.EXTRA
+import dev.feedforward.vim.lang.CommonCommandFlags.NEEDARG
+import dev.feedforward.vim.lang.CommonCommandFlags.REGSTR
+import dev.feedforward.vim.lang.CommonCommandFlags.TRLBAR
+import dev.feedforward.vim.lang.CommonCommandFlags.WORD1
 import java.util.*
 
 class VimLexerUtils {
@@ -33,21 +39,23 @@ class VimLexerUtils {
 }
 
 val commonCommands = arrayOf(
-        VimCommonCommand("ascii", 2, EnumSet.of(TRLBAR)),
-        VimCommonCommand("only", 2, EnumSet.of(BANG, TRLBAR)),
-        VimCommonCommand("quit", 1, EnumSet.of(BANG, TRLBAR)),
-        VimCommonCommand("comclear", 4, EnumSet.of(TRLBAR)),
-        VimCommonCommand("command", 3, EnumSet.of(BANG, EXTRA)),
-        VimCommonCommand("delcommand", 4, EnumSet.of(NEEDARG, WORD1, TRLBAR)),
-        VimCommonCommand("copy", 2, EnumSet.of(TRLBAR)),
-        VimCommonCommand("delete", 1, EnumSet.of(REGSTR, COUNT, TRLBAR))
+        VimCommonCommand("ascii", 2, TRLBAR),
+        VimCommonCommand("only", 2, BANG, TRLBAR),
+        VimCommonCommand("quit", 1, BANG, TRLBAR),
+        VimCommonCommand("comclear", 4, TRLBAR),
+        VimCommonCommand("command", 3, BANG, EXTRA),
+        VimCommonCommand("delcommand", 4, NEEDARG, WORD1, TRLBAR),
+        VimCommonCommand("copy", 2, TRLBAR),
+        VimCommonCommand("delete", 1, REGSTR, COUNT, TRLBAR)
 )
 
-data class VimCommonCommand(
+class VimCommonCommand(
         val name: String,
         val minLength: Int,
-        val flags: EnumSet<CommonCommandFlags> = EnumSet.noneOf(CommonCommandFlags::class.java)
-)
+        vararg flags: CommonCommandFlags
+) {
+    val flags: EnumSet<CommonCommandFlags> = EnumSet.copyOf(flags.toSet())
+}
 
 enum class CommonCommandFlags {
     BANG,
