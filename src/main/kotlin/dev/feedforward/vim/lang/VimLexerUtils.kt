@@ -1,5 +1,6 @@
 package dev.feedforward.vim.lang
 
+import dev.feedforward.vim.lang.CommonCommandFlags.*
 import java.util.*
 
 class VimLexerUtils {
@@ -11,20 +12,27 @@ class VimLexerUtils {
                     .find { it.name.startsWith(stringText) && stringText.length >= it.minLength }
                     ?: return -1
 
-            if (command.flags.contains(CommonCommandFlags.BANG)) return WAIT_FOR_ARGUMENT
+            if (waitForArg(command.flags)) return WAIT_FOR_ARGUMENT
             return SIMPLE_COMMAND
         }
 
         const val SIMPLE_COMMAND = 0
         const val WAIT_FOR_ARGUMENT = 1
+
+        private fun waitForArg(flags: EnumSet<CommonCommandFlags>): Boolean {
+            return BANG in flags ||
+                    NEEDARG in flags ||
+                    WORD1 in flags
+        }
     }
 }
 
 val commonCommands = arrayOf(
         VimCommonCommand("ascii", 2),
-        VimCommonCommand("only", 2, EnumSet.of(CommonCommandFlags.BANG)),
-        VimCommonCommand("quit", 1, EnumSet.of(CommonCommandFlags.BANG)),
-        VimCommonCommand("comclear", 4)
+        VimCommonCommand("only", 2, EnumSet.of(BANG)),
+        VimCommonCommand("quit", 1, EnumSet.of(BANG)),
+        VimCommonCommand("comclear", 4),
+        VimCommonCommand("delcommand", 4, EnumSet.of(NEEDARG, WORD1))
 )
 
 data class VimCommonCommand(
@@ -34,6 +42,8 @@ data class VimCommonCommand(
 )
 
 enum class CommonCommandFlags {
-    BANG
+    BANG,
+    NEEDARG,
+    WORD1
 }
 

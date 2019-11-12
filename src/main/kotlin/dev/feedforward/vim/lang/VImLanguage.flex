@@ -69,7 +69,6 @@ WORD = [:letter:]+
               trace(C_BANG, C_ARGUMENT);
               return VimTypes.C_COMMAND;
             }
-      "delc"|"delco"|"delcom"|"delcomm"|"delcomma"|"delcomman"|"delcommand" { return VimTypes.C_DELCOMMAND; }
       "d"|"de"|"del"|"dele"|"delet"|"delete"                  {
         trace(C_REGISTER, C_COUNT);
         return VimTypes.C_DELETE;
