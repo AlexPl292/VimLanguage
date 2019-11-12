@@ -37,5 +37,9 @@ val commonCommands = arrayOf(
         VimCommonCommand("command", 3, BANG, EXTRA, NOTRLCOM),
         VimCommonCommand("delcommand", 4, NEEDARG, WORD1, TRLBAR),
         VimCommonCommand("copy", 2, TRLBAR),
-        VimCommonCommand("delete", 1, REGSTR, COUNT, TRLBAR)
+        VimCommonCommand("delete", 1, REGSTR, COUNT, TRLBAR),
+        VimCommonCommand("delmarks", 4, BANG, EXTRA, TRLBAR),
+        VimCommonCommand("digraphs", 3, EXTRA, TRLBAR),
+        VimCommonCommand("browse", 3, NEEDARG, EXTRA, NOTRLCOM),
+        VimCommonCommand("qall", 2, BANG, TRLBAR)
 )
