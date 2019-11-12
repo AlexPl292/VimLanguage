@@ -22,7 +22,9 @@ class VimLexerUtils {
 
 val commonCommands = arrayOf(
         VimCommonCommand("ascii", 2, emptySet()),
-        VimCommonCommand("only", 2, EnumSet.of(CommonCommandFlags.BANG))
+        VimCommonCommand("only", 2, EnumSet.of(CommonCommandFlags.BANG)),
+        VimCommonCommand("quit", 1, EnumSet.of(CommonCommandFlags.BANG)),
+        VimCommonCommand("comclear", 4, emptySet())
 )
 
 data class VimCommonCommand(

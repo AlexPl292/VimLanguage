@@ -103,20 +103,16 @@ vimFile ::= item_*
 private item_ ::= (command|COMMENT|CRLF)
 
 command ::= echo_command
-          | comclear_command
           | command_command
           | delcommand_command
           | delete_command
-          | quit_command
           | copy_command
           | common_command
 
 echo_command ::= C_ECHO expr*
-comclear_command ::= C_COMCLEAR
 command_command ::= <<bang C_COMMAND>> [COMMAND_ARGUMENT]
 delcommand_command ::= C_DELCOMMAND WORD
 delete_command ::= [command_range] C_DELETE [WRITABLE_REGISTER] [INT_NUMBER]
-quit_command ::= <<bang C_QUIT>>
 copy_command ::= [command_range] C_COPY
 common_command ::= COMMON_COMMAND_NAME [COMMON_COMMAND_ARGUMENT]
 
