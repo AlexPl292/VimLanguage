@@ -1,19 +1,5 @@
 package dev.feedforward.vim.lang
 
-import dev.feedforward.vim.lang.CommonCommandFlags.BANG
-import dev.feedforward.vim.lang.CommonCommandFlags.CMDWIN
-import dev.feedforward.vim.lang.CommonCommandFlags.COUNT
-import dev.feedforward.vim.lang.CommonCommandFlags.EXTRA
-import dev.feedforward.vim.lang.CommonCommandFlags.MODIFY
-import dev.feedforward.vim.lang.CommonCommandFlags.NEEDARG
-import dev.feedforward.vim.lang.CommonCommandFlags.NOTRLCOM
-import dev.feedforward.vim.lang.CommonCommandFlags.RANGE
-import dev.feedforward.vim.lang.CommonCommandFlags.REGSTR
-import dev.feedforward.vim.lang.CommonCommandFlags.SBOXOK
-import dev.feedforward.vim.lang.CommonCommandFlags.TRLBAR
-import dev.feedforward.vim.lang.CommonCommandFlags.USECTRLV
-import dev.feedforward.vim.lang.CommonCommandFlags.WHOLEFOLD
-import dev.feedforward.vim.lang.CommonCommandFlags.WORD1
 import java.util.*
 
 class VimCommonCommand(
@@ -56,17 +42,3 @@ enum class CommonCommandFlags {
     FILE1            /* (FILES | NOSPC)  1 file allowed, defaults to current file */
 }
 
-val commonCommands = arrayOf(
-        VimCommonCommand("ascii", 2, TRLBAR, SBOXOK, CMDWIN),
-        VimCommonCommand("only", 2, BANG, TRLBAR),
-        VimCommonCommand("quit", 1, BANG, TRLBAR, CMDWIN),
-        VimCommonCommand("comclear", 4, TRLBAR, CMDWIN),
-        VimCommonCommand("command", 3, EXTRA, BANG, NOTRLCOM, USECTRLV, CMDWIN),
-        VimCommonCommand("delcommand", 4, NEEDARG, WORD1, TRLBAR, CMDWIN),
-        VimCommonCommand("copy", 2, RANGE, WHOLEFOLD, EXTRA, TRLBAR, CMDWIN, MODIFY),
-        VimCommonCommand("delete", 1, RANGE, WHOLEFOLD, REGSTR, COUNT, TRLBAR, CMDWIN, MODIFY),
-        VimCommonCommand("delmarks", 4, BANG, EXTRA, TRLBAR, CMDWIN),
-        VimCommonCommand("digraphs", 3, EXTRA, TRLBAR, CMDWIN),
-        VimCommonCommand("browse", 3, NEEDARG, EXTRA, NOTRLCOM, CMDWIN),
-        VimCommonCommand("qall", 2, BANG, TRLBAR, CMDWIN)
-)
