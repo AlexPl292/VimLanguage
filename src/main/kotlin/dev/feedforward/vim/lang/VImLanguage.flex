@@ -4,9 +4,6 @@ import com.intellij.lexer.FlexLexer;
 import com.intellij.psi.tree.IElementType;
 import dev.feedforward.vim.lang.psi.VimTypes;
 import com.intellij.psi.TokenType;
-import java.util.ArrayDeque;
-import java.util.Queue;
-import dev.feedforward.vim.lang.VimLexerUtils;
 
 %%
 
@@ -35,7 +32,12 @@ QUOTE_WITH_ANYTHING = \'.
 
 WORD = [:letter:]+
 
-%xstate COMMON_COMMAND_ARGUMENT COMMON_COMMAND_ARGUMENT_UNTIL_BAR
+%{
+    boolean nocomment = false;
+    boolean trbar = false;
+%}
+
+%xstate COMMON_COMMAND_ARGUMENT
 
 %%
 
@@ -114,31 +116,25 @@ WORD = [:letter:]+
       {SCIENTIFIC_NUMBER}                                     { return VimTypes.SCIENTIFIC_NUMBER; }
 
       {WORD}                                                  {
-        final int command = VimLexerUtils.isCommand(yytext());
-        if (command < 0) {
-          return VimTypes.WORD;
-        }
+                final int command = VimLexerUtils.isCommand(yytext());
+                if (command < 0) {
+                  return VimTypes.WORD;
+                }
 
-        if (command == VimLexerUtils.WAIT_FOR_ARGUMENT) {
-          yybegin(COMMON_COMMAND_ARGUMENT);
-        }
-        if (command == VimLexerUtils.ARGUMENT_UNTIL_BAR) {
-          yybegin(COMMON_COMMAND_ARGUMENT_UNTIL_BAR);
-        }
-        return VimTypes.COMMON_COMMAND_NAME;
+                nocomment = VimLexerUtils.nocomment;
+                trbar = VimLexerUtils.trlbar;
+                yybegin(COMMON_COMMAND_ARGUMENT);
+                return VimTypes.COMMON_COMMAND_NAME;
       }
 
       {QUOTE_WITH_ANYTHING}                                   { return VimTypes.QUOTE_WITH_ANYTHING; }
 }
 
 <COMMON_COMMAND_ARGUMENT> {
-    [^\r\n]+                                                  { yybegin(YYINITIAL); return VimTypes.COMMON_COMMAND_ARGUMENT; }
-    [\r\n]                                                    { yypushback(1); yybegin(YYINITIAL); }
-}
-
-<COMMON_COMMAND_ARGUMENT_UNTIL_BAR> {
-    [^\r\n|]+                                                  { yybegin(YYINITIAL); return VimTypes.COMMON_COMMAND_ARGUMENT; }
-    [\r\n|]                                                    { yypushback(1); yybegin(YYINITIAL); }
+    [\r\n]                                                    { yypushback(1); yybegin(YYINITIAL); return VimTypes.COMMON_COMMAND_ARGUMENT; }
+    "|"                                                       { if (trbar) { yypushback(1); yybegin(YYINITIAL); return VimTypes.COMMON_COMMAND_ARGUMENT; } }
+    "\""                                                      { if (!nocomment) { yypushback(1); yybegin(YYINITIAL); return VimTypes.COMMON_COMMAND_ARGUMENT; } }
+    [^]                                                       { /* Reading argument */ }
 }
 
 ({CRLF}|{WHITE_SPACE})+                                     { return TokenType.WHITE_SPACE; }
