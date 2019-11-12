@@ -46,6 +46,8 @@ WORD = [:letter:]+
 
       "if"                                                    { return VimTypes.IF; }
       "endif"                                                 { return VimTypes.ENDIF; }
+      "else"                                                  { return VimTypes.ELSE; }
+      "elseif"                                                { return VimTypes.ELSEIF; }
 
       {STRING_LITERAL}                                        { return VimTypes.STRING_LITERAL; }
       {SINGLE_QUOTED_STRING_LITERAL}                          { return VimTypes.STRING_LITERAL; }

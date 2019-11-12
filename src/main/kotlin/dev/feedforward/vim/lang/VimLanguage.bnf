@@ -103,7 +103,15 @@ common_command ::= [command_range] COMMON_COMMAND_NAME [COMMON_COMMAND_ARGUMENT]
 
 command_range ::= starred_range (range_separator starred_range)*
 
-if_command ::= IF expr item_* ENDIF
+if_command ::= IF expr
+                if_body
+               elseif_clause*
+               else_clause?
+               ENDIF
+
+private elseif_clause ::= ELSEIF expr if_body
+private else_clause ::= ELSE if_body
+private if_body ::= item_*
 
 private starred_range ::= range_address_with_offset [percent_star]
 range_address_with_offset ::= range_address plus_minus_number*
