@@ -6,6 +6,7 @@ import dev.feedforward.vim.lang.psi.VimTypes;
 import com.intellij.psi.TokenType;
 import java.util.ArrayDeque;
 import java.util.Queue;
+import dev.feedforward.vim.lang.VimLexerUtils;
 
 %%
 
@@ -55,6 +56,7 @@ QUOTE_WITH_ANYTHING = \'.
 WORD = [:letter:]+
 
 %state C_BANG C_ARGUMENT C_REGISTER C_COUNT
+%xstate COMMON_COMMAND_ARGUMENT
 
 %%
 
@@ -62,9 +64,7 @@ WORD = [:letter:]+
 
 <YYINITIAL> {
       "ec"|"ech"|"echo"                                       { return VimTypes.C_ECHO; }
-      "as"|"asc"|"asci"|"ascii"                               { return VimTypes.C_ASCII; }
       "comc"|"comcl"|"comcle"|"comclea"|"comclear"            { return VimTypes.C_COMCLEAR; }
-      "on"|"onl"|"only"                                       { trace(C_BANG); return VimTypes.C_ONLY; }
       "q"|"qu"|"qui"|"quit"                                   { trace(C_BANG); return VimTypes.C_QUIT; }
       "co"|"cop"|"copy"                                       { return VimTypes.C_COPY; }
       "com"|"comm"|"comma"|"comman"|"command"                 {
@@ -140,9 +140,24 @@ WORD = [:letter:]+
       {FLOAT_NUMBER}                                          { return VimTypes.FLOAT_NUMBER; }
       {SCIENTIFIC_NUMBER}                                     { return VimTypes.SCIENTIFIC_NUMBER; }
 
-      {WORD}                                                  { return VimTypes.WORD; }
+      {WORD}                                                  {
+        final int command = VimLexerUtils.isCommand(yytext());
+        if (command < 0) {
+          return VimTypes.WORD;
+        }
+
+        if (command == VimLexerUtils.WAIT_FOR_ARGUMENT) {
+          yybegin(COMMON_COMMAND_ARGUMENT);
+        }
+        return VimTypes.COMMON_COMMAND_NAME;
+      }
 
       {QUOTE_WITH_ANYTHING}                                   { return VimTypes.QUOTE_WITH_ANYTHING; }
+}
+
+<COMMON_COMMAND_ARGUMENT> {
+    [^\r\n]+                                                  { yybegin(YYINITIAL); return VimTypes.COMMON_COMMAND_ARGUMENT; }
+    [\r\n]                                                    { yypushback(1); yybegin(YYINITIAL); }
 }
 
 <C_BANG> {
