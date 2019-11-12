@@ -15,13 +15,13 @@ import com.intellij.psi.TokenType;
 %type IElementType
 %public
 
-END_OF_LINE_COMMENT=("#")[^\r\n]*
+END_OF_LINE_COMMENT=\"[^\r\n]*
 
 CRLF=\R
 WHITE_SPACE=[\ \n\t\f]
 
-STRING_LITERAL=\"(\\.|[^\\\"])*\"
-SINGLE_QUOTED_STRING_LITERAL=\'(\\.|[^\\\'])*\'
+STRING_LITERAL=\"(\\.|[^\\\"\r\n])*\"
+SINGLE_QUOTED_STRING_LITERAL=\'(\\.|[^\\\'\r\n])*\'
 
 HEX_NUMBER = "0" [xX] [0-9a-fA-F]+
 INT_NUMBER = [:digit:]+
@@ -37,11 +37,9 @@ WORD = [:letter:]+
     boolean trbar = false;
 %}
 
-%xstate COMMON_COMMAND_ARGUMENT
+%xstate COMMON_COMMAND_ARGUMENT COMMON_COMMAND_COMMENT
 
 %%
-
-<YYINITIAL> {END_OF_LINE_COMMENT}                           { yybegin(YYINITIAL); return VimTypes.COMMENT; }
 
 <YYINITIAL> {
       "ec"|"ech"|"echo"                                       { return VimTypes.C_ECHO; }
@@ -135,9 +133,19 @@ WORD = [:letter:]+
 <COMMON_COMMAND_ARGUMENT> {
     [\r\n]                                                    { yypushback(1); yybegin(YYINITIAL); return VimTypes.COMMON_COMMAND_ARGUMENT; }
     "|"                                                       { if (trbar) { yypushback(1); yybegin(YYINITIAL); return VimTypes.COMMON_COMMAND_ARGUMENT; } }
-    "\""                                                      { if (!nocomment) { yypushback(1); yybegin(YYINITIAL); return VimTypes.COMMON_COMMAND_ARGUMENT; } }
+    \"                                                        {
+        if (!nocomment) {
+          yypushback(1); yybegin(COMMON_COMMAND_COMMENT); return VimTypes.COMMON_COMMAND_ARGUMENT;
+        }
+    }
     [^]                                                       { /* Reading argument */ }
 }
+
+<COMMON_COMMAND_COMMENT> {
+    {END_OF_LINE_COMMENT}                                   { yybegin(YYINITIAL); return VimTypes.COMMENT; }
+}
+
+^{END_OF_LINE_COMMENT}                                      { yybegin(YYINITIAL); return VimTypes.FULL_LINE_COMMENT; }
 
 ({CRLF}|{WHITE_SPACE})+                                     { return TokenType.WHITE_SPACE; }
 
