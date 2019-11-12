@@ -35,7 +35,7 @@ QUOTE_WITH_ANYTHING = \'.
 
 WORD = [:letter:]+
 
-%xstate COMMON_COMMAND_ARGUMENT
+%xstate COMMON_COMMAND_ARGUMENT COMMON_COMMAND_ARGUMENT_UNTIL_BAR
 
 %%
 
@@ -102,6 +102,7 @@ WORD = [:letter:]+
       "("                                                     { return VimTypes.POPEN; }
       ")"                                                     { return VimTypes.PCLOSE; }
       "?"                                                     { return VimTypes.QUESTION; }
+      "|"                                                     { return VimTypes.BAR; }
 
       \\&                                                     { return VimTypes.ESCAPED_AMPERSAND; }
       \\\?                                                    { return VimTypes.ESCAPED_QUESTION; }
@@ -121,6 +122,9 @@ WORD = [:letter:]+
         if (command == VimLexerUtils.WAIT_FOR_ARGUMENT) {
           yybegin(COMMON_COMMAND_ARGUMENT);
         }
+        if (command == VimLexerUtils.ARGUMENT_UNTIL_BAR) {
+          yybegin(COMMON_COMMAND_ARGUMENT_UNTIL_BAR);
+        }
         return VimTypes.COMMON_COMMAND_NAME;
       }
 
@@ -130,6 +134,11 @@ WORD = [:letter:]+
 <COMMON_COMMAND_ARGUMENT> {
     [^\r\n]+                                                  { yybegin(YYINITIAL); return VimTypes.COMMON_COMMAND_ARGUMENT; }
     [\r\n]                                                    { yypushback(1); yybegin(YYINITIAL); }
+}
+
+<COMMON_COMMAND_ARGUMENT_UNTIL_BAR> {
+    [^\r\n|]+                                                  { yybegin(YYINITIAL); return VimTypes.COMMON_COMMAND_ARGUMENT; }
+    [\r\n|]                                                    { yypushback(1); yybegin(YYINITIAL); }
 }
 
 ({CRLF}|{WHITE_SPACE})+                                     { return TokenType.WHITE_SPACE; }

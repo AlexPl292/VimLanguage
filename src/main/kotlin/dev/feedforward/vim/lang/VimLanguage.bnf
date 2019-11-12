@@ -92,7 +92,9 @@
 
 vimFile ::= item_*
 
-private item_ ::= (command|COMMENT|CRLF)
+private item_ ::= (commands|COMMENT|CRLF)
+
+commands ::= command (BAR command)*
 
 command ::= echo_command
           | if_command
