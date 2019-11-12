@@ -1,6 +1,8 @@
 package dev.feedforward.vim.lang
 
-import dev.feedforward.vim.lang.CommonCommandFlags.*
+import dev.feedforward.vim.lang.CommonCommandFlags.BANG
+import dev.feedforward.vim.lang.CommonCommandFlags.NEEDARG
+import dev.feedforward.vim.lang.CommonCommandFlags.WORD1
 import java.util.*
 
 class VimLexerUtils {
@@ -32,7 +34,8 @@ val commonCommands = arrayOf(
         VimCommonCommand("only", 2, EnumSet.of(BANG)),
         VimCommonCommand("quit", 1, EnumSet.of(BANG)),
         VimCommonCommand("comclear", 4),
-        VimCommonCommand("delcommand", 4, EnumSet.of(NEEDARG, WORD1))
+        VimCommonCommand("delcommand", 4, EnumSet.of(NEEDARG, WORD1)),
+        VimCommonCommand("copy", 2)
 )
 
 data class VimCommonCommand(

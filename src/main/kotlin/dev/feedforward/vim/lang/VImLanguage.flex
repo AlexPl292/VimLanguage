@@ -64,7 +64,6 @@ WORD = [:letter:]+
 
 <YYINITIAL> {
       "ec"|"ech"|"echo"                                       { return VimTypes.C_ECHO; }
-      "co"|"cop"|"copy"                                       { return VimTypes.C_COPY; }
       "com"|"comm"|"comma"|"comman"|"command"                 {
               trace(C_BANG, C_ARGUMENT);
               return VimTypes.C_COMMAND;
