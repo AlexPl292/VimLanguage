@@ -13,6 +13,11 @@
   tokenTypeClass="dev.feedforward.vim.lang.psi.VimTokenType"
 
   tokens = [
+      ASSIGNMENT         = '='
+      DOT_ASSIGNMENT     = '.='
+      PLUS_ASSIGNMENT    = '+='
+      MINUS_ASSIGNMENT   = '-='
+
       ANDAND             = '&&'
       OROR               = '||'
       EQEQ               = '=='
@@ -97,6 +102,7 @@ private item_ ::= (commands|FULL_LINE_COMMENT|CRLF)
 private commands ::= command (BAR command)* [COMMENT]
 
 command ::= echo_command
+          | let_command
           | if_command
           | while_command
           | common_command
@@ -105,6 +111,11 @@ echo_command ::= C_ECHO expr*
 common_command ::= [command_range] COMMON_COMMAND_NAME [COMMON_COMMAND_ARGUMENT]
 
 command_range ::= starred_range (range_separator starred_range)*
+
+let_command ::= let_with_expression | let_with_name | single_let
+private single_let ::= LET
+private let_with_name ::= LET WORD
+private let_with_expression ::= LET lvalue ('=' | '+=' | '-=' | '.=') expr
 
 if_command ::= IF expr
                 if_while_body
@@ -164,3 +175,5 @@ call_expr ::= expr arg_list
 arg_list ::= '(' expr (',' (expr | &')'))* ')' {pin(".*")=1}
 
 number ::= HEX_NUMBER | INT_NUMBER | FLOAT_NUMBER | SCIENTIFIC_NUMBER
+
+lvalue ::= WORD

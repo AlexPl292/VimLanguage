@@ -38,11 +38,13 @@ WORD = [:letter:]+
 %}
 
 %xstate COMMON_COMMAND_ARGUMENT COMMON_COMMAND_COMMENT
+%state LET_COMMAND
 
 %%
 
 <YYINITIAL> {
       "ec"|"ech"|"echo"                                       { return VimTypes.C_ECHO; }
+      "let"                                                   { yybegin(LET_COMMAND); return VimTypes.LET; }
 
       "if"                                                    { return VimTypes.IF; }
       "endif"                                                 { return VimTypes.ENDIF; }
@@ -143,6 +145,15 @@ WORD = [:letter:]+
 
 <COMMON_COMMAND_COMMENT> {
     {END_OF_LINE_COMMENT}                                   { yybegin(YYINITIAL); return VimTypes.COMMENT; }
+}
+
+<LET_COMMAND> {
+    "|"|"\""|{CRLF}                                         { yypushback(1); yybegin(YYINITIAL); }
+    {WORD}                                                  { return VimTypes.WORD; }
+    "="                                                     { yybegin(YYINITIAL); return VimTypes.ASSIGNMENT; }
+    ".="                                                    { yybegin(YYINITIAL); return VimTypes.DOT_ASSIGNMENT; }
+    "+="                                                    { yybegin(YYINITIAL); return VimTypes.PLUS_ASSIGNMENT; }
+    "-="                                                    { yybegin(YYINITIAL); return VimTypes.MINUS_ASSIGNMENT; }
 }
 
 ^{END_OF_LINE_COMMENT}                                      { yybegin(YYINITIAL); return VimTypes.FULL_LINE_COMMENT; }
