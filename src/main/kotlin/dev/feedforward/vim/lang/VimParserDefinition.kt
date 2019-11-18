@@ -13,6 +13,7 @@ import com.intellij.psi.TokenType
 import com.intellij.psi.tree.IFileElementType
 import com.intellij.psi.tree.TokenSet
 import dev.feedforward.vim.lang.parser.VimParser
+import dev.feedforward.vim.lang.psi.VimExtraTokens
 import dev.feedforward.vim.lang.psi.VimFile
 import dev.feedforward.vim.lang.psi.VimTypes
 import javax.swing.Icon
@@ -41,7 +42,7 @@ class VimParserDefinition : ParserDefinition {
     }
 
     companion object {
-        val WHITE_SPACES = TokenSet.create(TokenType.WHITE_SPACE)
+        val WHITE_SPACES = TokenSet.create(TokenType.WHITE_SPACE, VimExtraTokens.IGNORABLE_WHITESPACE)
         val COMMENTS = TokenSet.create(VimTypes.FULL_LINE_COMMENT, VimTypes.COMMENT)
 
         val FILE = IFileElementType(VimLanguage)

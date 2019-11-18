@@ -3,6 +3,7 @@ package dev.feedforward.vim.lang;
 import com.intellij.lexer.FlexLexer;
 import com.intellij.psi.tree.IElementType;
 import dev.feedforward.vim.lang.psi.VimTypes;
+import dev.feedforward.vim.lang.psi.VimExtraTokens;
 import com.intellij.psi.TokenType;
 
 %%
@@ -155,6 +156,8 @@ WORD = [:letter:]+
     "+="                                                    { yybegin(YYINITIAL); return VimTypes.PLUS_ASSIGNMENT; }
     "-="                                                    { yybegin(YYINITIAL); return VimTypes.MINUS_ASSIGNMENT; }
 }
+
+\s*\\                                                       { return VimExtraTokens.IGNORABLE_WHITESPACE; }
 
 ^{END_OF_LINE_COMMENT}                                      { yybegin(YYINITIAL); return VimTypes.FULL_LINE_COMMENT; }
 

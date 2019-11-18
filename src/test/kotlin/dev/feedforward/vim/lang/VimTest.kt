@@ -13,7 +13,5 @@ class VimTest : BasePlatformTestCase() {
             only
         """.trimIndent())
         val child = elements.firstChild
-        val commandName = (child as VimCommand).commandName
-        TestCase.assertEquals("ascii", commandName)
     }
 }
