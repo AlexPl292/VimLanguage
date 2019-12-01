@@ -105,6 +105,7 @@ command ::= echo_command
           | let_command
           | if_command
           | while_command
+          | function_command
           | common_command
 
 echo_command ::= C_ECHO expr*
@@ -116,6 +117,15 @@ let_command ::= let_with_expression | let_with_name | single_let
 private single_let ::= LET
 private let_with_name ::= LET WORD
 private let_with_expression ::= LET lvalue ('=' | '+=' | '-=' | '.=') expr
+
+function_command ::= function_with_body | function_with_name | function_search | simple_function
+private simple_function ::= FUNCTION
+private function_search ::= FUNCTION '/' WORD
+private function_with_name ::= FUNCTION WORD
+private function_with_body ::= function_signature item_* ENDFUNCTION
+
+function_signature ::= FUNCTION function_argument_list
+function_argument_list ::= '(' WORD (',' (WORD | &')'))* ')' {pin(".*")=1}
 
 if_command ::= IF expr
                 if_while_body

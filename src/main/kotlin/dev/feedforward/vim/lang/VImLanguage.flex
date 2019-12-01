@@ -53,6 +53,8 @@ WORD = [:letter:]+
       "elseif"                                                { return VimTypes.ELSEIF; }
       "while"                                                 { return VimTypes.WHILE; }
       "endwhile"                                              { return VimTypes.ENDWHILE; }
+      "function"                                              { return VimTypes.FUNCTION; }
+      "endfunction"                                           { return VimTypes.ENDFUNCTION; }
 
       {STRING_LITERAL}                                        { return VimTypes.STRING_LITERAL; }
       {SINGLE_QUOTED_STRING_LITERAL}                          { return VimTypes.STRING_LITERAL; }
