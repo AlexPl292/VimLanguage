@@ -106,6 +106,7 @@ command ::= echo_command
           | if_command
           | while_command
           | function_command
+          | for_command
           | common_command
 
 echo_command ::= C_ECHO expr*
@@ -126,6 +127,8 @@ private function_with_body ::= function_signature item_* ENDFUNCTION
 
 function_signature ::= FUNCTION function_argument_list
 function_argument_list ::= '(' WORD (',' (WORD | &')'))* ')' {pin(".*")=1}
+
+for_command ::= FOR lvalue IN expr item_* ENDFOR
 
 if_command ::= IF expr
                 if_while_body
